@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY IP MY ID - Check Your IP Address & Browser Info</title>
+    <meta name="description" content="Check your IP address, location, user agent, browser info and more. Complete IP information checker.">
+    <meta name="keywords" content="what is my ip, ip checker, my ip address, user agent, browser info, location by ip">
+    <link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAApElEQVQ4jWNkwAEYcQkwMjIyMjExMeHkY2RkZPz//z8jTj4uAFcuIyMjI2FdWPpgahkZGRn//fvH+OfPH4zSMDYjIyPjz58/4TbA1GMAZmx6sAAjLj2MqG4lCsB9gMsXRIXAf//+Mf7+/Ru/Abh8gQ3AFWAkRw8jIwED/v37R5oBjIyMjJ8+fWL8+fMnfgO+fv1KnAEMDAyM3759Y2RgYGBkYGBg/A8AAAD//8WmgjL4Kx+LAAAAAElFTkSuQmCC">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .copy-btn {
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover {
+            background-color: #4f46e5;
+        }
+        .ip-display {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navbar -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-network-wired text-2xl"></i>
+                    <h1 class="text-2xl font-bold">MY IP MY ID</h1>
+                </div>
+                <div class="space-x-4">
+                    <a href="/" class="hover:text-gray-200 font-medium">Home</a>
+                    <a href="#info" class="hover:text-gray-200 font-medium">Info</a>
+                    <a href="#about" class="hover:text-gray-200 font-medium">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">What is My IP Address?</h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Check your IP address, location, browser information, user agent, and more. Your digital identity revealed.
+            </p>
+        </div>
+
+        <!-- IP Display Card -->
+        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden mb-8 card-hover">
+            <div class="p-1 gradient-bg"></div>
+            <div class="p-8">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="info-icon bg-blue-100 text-blue-600">
+                        <i class="fas fa-laptop-code text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">Your IP Address</h3>
+                </div>
+                
+                <div class="mb-8">
+                    <div class="ip-display text-4xl md:text-5xl font-bold text-center text-gray-800 mb-4 p-4 bg-gray-50 rounded-lg border-2 border-gray-200" id="ipAddress">
+                        <div class="flex justify-center items-center">
+                            <div class="animate-pulse h-12 w-64 bg-gray-300 rounded"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center space-x-4">
+                        <button onclick="copyToClipboard('ipAddress')" class="copy-btn bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg flex items-center">
+                            <i class="fas fa-copy mr-2"></i> Copy IP
+                        </button>
+                        <button onclick="refreshData()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg flex items-center">
+                            <i class="fas fa-redo mr-2"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quick Info -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-globe-americas text-blue-600 mr-2"></i>
+                            <h4 class="font-bold text-gray-800">Location</h4>
+                        </div>
+                        <p class="text-gray-600" id="locationInfo">Loading...</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-user-shield text-green-600 mr-2"></i>
+                            <h4 class="font-bold text-gray-800">User Agent</h4>
+                        </div>
+                        <p class="text-gray-600 truncate" id="userAgentInfo">Loading...</p>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-clock text-purple-600 mr-2"></i>
+                            <h4 class="font-bold text-gray-800">Timestamp</h4>
+                        </div>
+                        <p class="text-gray-600" id="timestampInfo">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Information -->
+        <div id="info" class="max-w-4xl mx-auto">
+            <h3 class="text-3xl font-bold text-gray-800 mb-8 text-center">Detailed Information</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Browser & OS Info -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="info-icon bg-blue-100 text-blue-600">
+                            <i class="fas fa-window-maximize"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800">Browser & OS Information</h4>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Browser</label>
+                            <p class="font-medium text-gray-800" id="browserInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Browser Version</label>
+                            <p class="font-medium text-gray-800" id="browserVersion">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Operating System</label>
+                            <p class="font-medium text-gray-800" id="osInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Device Type</label>
+                            <p class="font-medium text-gray-800" id="deviceInfo">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Location Details -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="info-icon bg-green-100 text-green-600">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800">Geolocation Details</h4>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Country</label>
+                            <p class="font-medium text-gray-800" id="countryInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Region/City</label>
+                            <p class="font-medium text-gray-800" id="regionInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Timezone</label>
+                            <p class="font-medium text-gray-800" id="timezoneInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Coordinates (Lat, Long)</label>
+                            <p class="font-medium text-gray-800" id="coordinatesInfo">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Connection Info -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="info-icon bg-purple-100 text-purple-600">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800">Connection Information</h4>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Protocol</label>
+                            <p class="font-medium text-gray-800" id="protocolInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Secure Connection</label>
+                            <p class="font-medium text-gray-800" id="secureInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Host</label>
+                            <p class="font-medium text-gray-800" id="hostInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Request Method</label>
+                            <p class="font-medium text-gray-800" id="methodInfo">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Info -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="info-icon bg-red-100 text-red-600">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800">Additional Information</h4>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Accept Language</label>
+                            <p class="font-medium text-gray-800" id="languageInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-scale-500">Accept Encoding</label>
+                            <p class="font-medium text-gray-800" id="encodingInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Connection Type</label>
+                            <p class="font-medium text-gray-800" id="connectionTypeInfo">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-500">Cache Control</label>
+                            <p class="font-medium text-gray-800" id="cacheInfo">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div id="about" class="max-w-4xl mx-auto mt-16">
+            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl shadow-lg p-8">
+                <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">About MY IP MY ID</h3>
+                
+                <div class="prose max-w-none text-gray-700">
+                    <p class="mb-4">
+                        <strong>MY IP MY ID</strong> is a comprehensive IP address checking tool that reveals your digital identity on the internet. 
+                        When you connect to any website, you leave a digital footprint that includes your IP address, location, browser information, and more.
+                    </p>
+                    
+                    <p class="mb-4">
+                        This tool helps you understand what information websites can see when you visit them. It's useful for:
+                    </p>
+                    
+                    <ul class="list-disc pl-5 mb-4 space-y-2">
+                        <li>Checking if your VPN or proxy is working correctly</li>
+                        <li>Debugging network or connectivity issues</li>
+                        <li>Understanding what information websites collect</li>
+                        <li>Verifying your public IP address</li>
+                        <li>Testing geolocation services</li>
+                    </ul>
+                    
+                    <div class="mt-8 p-4 bg-white rounded-lg border border-gray-200">
+                        <h4 class="font-bold text-gray-800 mb-2">Privacy Note:</h4>
+                        <p class="text-gray-700">
+                            We do not store any of your information. All data displayed is retrieved in real-time and is not saved to our servers. 
+                            Your privacy is important to us.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-network-wired text-2xl"></i>
+                        <h2 class="text-2xl font-bold">MY IP MY ID</h2>
+                    </div>
+                    <p class="mt-2 text-gray-200">Your digital identity revealed</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-gray-300">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-gray-300">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-gray-300">
+                        <i class="fas fa-envelope text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-300">
+                <p>&copy; 2023 MY IP MY ID. All information is retrieved in real-time and not stored.</p>
+                <p class="mt-2 text-sm">Made with <i class="fas fa-heart text-red-400"></i> for internet users worldwide</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Fungsi untuk mengambil data IP
+        async function fetchIPData() {
+            try {
+                const response = await fetch('/api/myip');
+                const data = await response.json();
+                
+                if (data.success) {
+                    updateDisplay(data);
+                } else {
+                    showError('Failed to fetch IP data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Could not connect to server');
+            }
+        }
+        
+        // Fungsi untuk memperbarui tampilan
+        function updateDisplay(data) {
+            // IP Address
+            document.getElementById('ipAddress').innerHTML = data.ipAddress;
+            
+            // Location Info
+            const location = data.location;
+            if (location) {
+                document.getElementById('locationInfo').textContent = 
+                    `${location.city || 'Unknown'}, ${location.region || 'Unknown'}, ${location.country || 'Unknown'}`;
+                document.getElementById('countryInfo').textContent = location.country || 'Unknown';
+                document.getElementById('regionInfo').textContent = 
+                    `${location.city || 'Unknown'}${location.region ? `, ${location.region}` : ''}`;
+                document.getElementById('timezoneInfo').textContent = location.timezone || 'Unknown';
+                document.getElementById('coordinatesInfo').textContent = 
+                    location.ll ? `${location.ll[0]}, ${location.ll[1]}` : 'Unknown';
+            } else {
+                document.getElementById('locationInfo').textContent = 'Location data not available';
+            }
+            
+            // User Agent
+            document.getElementById('userAgentInfo').textContent = 
+                `${data.userAgent.browser} ${data.userAgent.version} on ${data.userAgent.os}`;
+            
+            // Timestamp
+            const timestamp = new Date(data.timestamp);
+            document.getElementById('timestampInfo').textContent = 
+                timestamp.toLocaleString();
+            
+            // Browser & OS Info
+            document.getElementById('browserInfo').textContent = data.userAgent.browser;
+            document.getElementById('browserVersion').textContent = data.userAgent.version;
+            document.getElementById('osInfo').textContent = `${data.userAgent.os} ${data.userAgent.osVersion || ''}`;
+            document.getElementById('deviceInfo').textContent = data.userAgent.device || 'Desktop';
+            
+            // Connection Info
+            document.getElementById('protocolInfo').textContent = `${data.connection.protocol.toUpperCase()}`;
+            document.getElementById('secureInfo').textContent = data.connection.secure ? 'Yes (HTTPS)' : 'No (HTTP)';
+            document.getElementById('hostInfo').textContent = data.connection.host;
+            document.getElementById('methodInfo').textContent = data.method;
+            
+            // Additional Info
+            document.getElementById('languageInfo').textContent = data.headers.acceptLanguage;
+            document.getElementById('encodingInfo').textContent = data.headers.acceptEncoding;
+            document.getElementById('connectionTypeInfo').textContent = data.headers.connection;
+            document.getElementById('cacheInfo').textContent = data.headers.cacheControl;
+        }
+        
+        // Fungsi untuk menyalin teks ke clipboard
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent || element.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Tampilkan feedback
+                const originalText = event.target.innerHTML;
+                event.target.innerHTML = '<i class="fas fa-check mr-2"></i> Copied!';
+                event.target.classList.remove('bg-blue-600');
+                event.target.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    event.target.innerHTML = originalText;
+                    event.target.classList.remove('bg-green-600');
+                    event.target.classList.add('bg-blue-600');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy text');
+            });
+        }
+        
+        // Fungsi untuk refresh data
+        function refreshData() {
+            // Tampilkan loading state
+            document.getElementById('ipAddress').innerHTML = 
+                '<div class="flex justify-center items-center"><div class="animate-pulse h-12 w-64 bg-gray-300 rounded"></div></div>';
+            
+            document.getElementById('locationInfo').textContent = 'Refreshing...';
+            document.getElementById('userAgentInfo').textContent = 'Refreshing...';
+            document.getElementById('timestampInfo').textContent = 'Refreshing...';
+            
+            // Ambil data baru
+            fetchIPData();
+        }
+        
+        // Fungsi untuk menampilkan error
+        function showError(message) {
+            document.getElementById('ipAddress').innerHTML = 
+                `<span class="text-red-600">${message}</span>`;
+        }
+        
+        // Ambil data saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', fetchIPData);
+        
+        // Auto-refresh setiap 30 detik (opsional)
+        // setInterval(fetchIPData, 30000);
+    </script>
+</body>
+</html>
