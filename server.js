@@ -12,23 +12,23 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(helmet({
-    contentSecurityPolicy: false, // Disable for simplicity, configure properly in production
+    contentSecurityPolicy: false,
 }));
 app.use(cors());
+// Limit body size untuk upload test
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(requestIp.mw());
 
-// API endpoint untuk mendapatkan informasi IP
+// --- API UTAMA (IP INFO) ---
 app.get('/api/myip', (req, res) => {
     try {
         const clientIp = req.clientIp;
         const userAgent = req.headers['user-agent'];
         const agent = useragent.parse(userAgent);
-        
-        // Dapatkan informasi lokasi dari IP
         const geo = geoip.lookup(clientIp);
         
-        // Informasi browser dan OS
         const browserInfo = {
             browser: agent.family,
             version: agent.toVersion(),
@@ -37,7 +37,6 @@ app.get('/api/myip', (req, res) => {
             device: agent.device.family
         };
         
-        // Informasi koneksi
         const connectionInfo = {
             secure: req.secure,
             protocol: req.protocol,
@@ -45,7 +44,6 @@ app.get('/api/myip', (req, res) => {
             origin: req.get('origin') || 'N/A'
         };
         
-        // Informasi headers
         const headersInfo = {
             acceptLanguage: req.headers['accept-language'] || 'N/A',
             acceptEncoding: req.headers['accept-encoding'] || 'N/A',
@@ -53,7 +51,6 @@ app.get('/api/myip', (req, res) => {
             cacheControl: req.headers['cache-control'] || 'N/A'
         };
         
-        // Response data
         const responseData = {
             success: true,
             timestamp: new Date().toISOString(),
@@ -63,7 +60,7 @@ app.get('/api/myip', (req, res) => {
                 region: geo.region,
                 city: geo.city,
                 timezone: geo.timezone,
-                ll: geo.ll, // Latitude dan Longitude
+                ll: geo.ll,
                 metro: geo.metro,
                 range: geo.range
             } : null,
@@ -80,50 +77,52 @@ app.get('/api/myip', (req, res) => {
         
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Internal server error',
-            message: error.message
-        });
+        res.status(500).json({ success: false, error: 'Internal server error' });
     }
 });
 
-// Endpoint untuk halaman utama
+// --- API SPEEDTEST ---
+
+// 1. Latency / Ping Endpoint
+app.get('/api/speedtest/ping', (req, res) => {
+    res.status(200).send('pong');
+});
+
+// 2. Download Test (Mengirim junk data 5MB)
+app.get('/api/speedtest/download', (req, res) => {
+    // Generate buffer 5MB (sekitar 5 juta byte)
+    const sizeInBytes = 5 * 1024 * 1024; 
+    const buffer = Buffer.alloc(sizeInBytes, 'a');
+    
+    res.set({
+        'Content-Type': 'application/octet-stream',
+        'Content-Length': sizeInBytes,
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+    });
+    res.send(buffer);
+});
+
+// 3. Upload Test (Menerima junk data)
+app.post('/api/speedtest/upload', (req, res) => {
+    // Data diterima tapi tidak disimpan untuk menghemat memori
+    res.status(200).json({ success: true, message: 'Upload received' });
+});
+
+
+// Endpoint Halaman
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Endpoint untuk halaman about
 app.get('/about', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'about.html'));
 });
 
-// Endpoint untuk testing
-app.get('/api/test', (req, res) => {
-    res.json({
-        message: 'API is working!',
-        timestamp: new Date().toISOString()
-    });
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
-        success: false,
-        error: 'Something went wrong!'
-    });
-});
-
 // 404 handler
 app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        error: 'Endpoint not found'
-    });
+    res.status(404).json({ success: false, error: 'Endpoint not found' });
 });
 
 app.listen(PORT, () => {
     console.log(`Server berjalan di http://localhost:${PORT}`);
-    console.log(`API endpoint: http://localhost:${PORT}/api/myip`);
 });
