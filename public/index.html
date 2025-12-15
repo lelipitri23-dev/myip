@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="/favicon.png" rel="icon" type="image/png">
+    <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
     <title>MY IP PRO - Advanced Network Tools</title>
     <meta name="description" content="Check IP, DNS Leak, Speedtest, and more.">
     <meta name="google-site-verification" content="ZHrl8XGPizBMWh3sbrNHak10zlapc99-iOXAGjgtiJQ" />
@@ -229,7 +231,10 @@
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden fade-in">
             <div class="bg-slate-50 px-5 py-3 border-b border-slate-100 flex justify-between items-center">
                 <h4 class="font-bold text-slate-700 text-sm">Recent History</h4>
-                <button onclick="clearHistory()" class="text-xs text-red-500 hover:text-red-700">Clear</button>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-history text-slate-400 text-xs"></i>
+                    <span class="text-[10px] text-slate-400 bg-white px-2 py-0.5 rounded border border-slate-100">Last 20</span>
+                </div>
             </div>
             <div id="historyList" class="divide-y divide-slate-50">
                 <p class="text-slate-400 text-xs text-center py-4">No history yet</p>
@@ -287,7 +292,9 @@
 
             const newItem = { ip, country, date: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) };
             history.unshift(newItem); 
-            if (history.length > 5) history.pop(); // Keep only 5 on mobile
+            
+            // UPDATE: Batas dinaikkan menjadi 20
+            if (history.length > 20) history.pop(); 
             
             localStorage.setItem('ipHistory', JSON.stringify(history));
             renderHistory();
@@ -316,10 +323,7 @@
             `).join('');
         }
 
-        function clearHistory() {
-            localStorage.removeItem('ipHistory');
-            renderHistory();
-        }
+        // FUNGSI clearHistory() SUDAH DIHAPUS
 
         // --- LEAK TESTS ---
         function detectWebRTC() {
