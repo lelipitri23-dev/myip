@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Allow: /about
+Disallow: /api/
+Disallow: /cdn-cgi/
+Sitemap: https://myip-n4ix.onrender.com/sitemap.xml
