@@ -6,7 +6,7 @@
     <link href="/favicon.png" rel="icon" type="image/png">
     <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
     <title>MY IP PRO - Advanced Network Tools</title>
-    <meta name="description" content="Check IP, DNS Leak, Speedtest, and more.">
+    <meta name="description" content="Check IP, DNS Leak, Speedtest without server load.">
     <meta name="google-site-verification" content="ZHrl8XGPizBMWh3sbrNHak10zlapc99-iOXAGjgtiJQ" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,7 +18,7 @@
           "@type": "WebApplication",
           "name": "MY IP PRO",
           "url": "https://myip-n4ix.onrender.com/", 
-          "description": "All-in-one network tools: Check IP Address, Internet Speed Test (Ping, Download, Upload), DNS Leak Test, and WebRTC Privacy Check.",
+          "description": "All-in-one network tools: Check IP Address, Internet Speed Test (Ping, Download), DNS Leak Test, and WebRTC Privacy Check.",
           "applicationCategory": "UtilitiesApplication",
           "operatingSystem": "Any",
           "browserRequirements": "Requires JavaScript",
@@ -30,62 +30,15 @@
           },
           "featureList": [
             "Real-time IP Address Detection",
-            "Internet Speed Test (Download, Upload, Ping)",
+            "Client-side Internet Speed Test",
             "DNS Leak Detection",
             "WebRTC Local IP Leak Check",
-            "User Agent & Browser Analysis",
             "Recent IP History"
           ],
           "author": {
             "@type": "Organization",
             "name": "MY IP PRO"
           }
-        },
-        {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "What is my IP address?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Your IP address is a unique numerical label assigned to your device. MY IP PRO detects your public IPv4/IPv6 address, location, and ISP instantly."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How do I check for DNS Leaks?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Use the 'Privacy Leak Check' section on this tool. It queries a public API to see which DNS server is handling your requests. If the result shows your ISP's server instead of your VPN's server, you have a DNS leak."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Is the Internet Speed Test accurate?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes, our Speedtest measures your latency (ping), download speed, and upload speed directly from your browser to our optimized server endpoint."
-              }
-            }
-          ]
-        },
-        {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://myip-n4ix.onrender.com/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "About",
-              "item": "https://myip-n4ix.onrender.com/about"
-            }
-          ]
         }
       ]
     }
@@ -94,8 +47,6 @@
     <style>
         .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .ip-font { font-family: 'Courier New', monospace; letter-spacing: -1px; }
-        
-        /* Smooth fade in */
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -118,15 +69,13 @@
         
         <div id="main" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden fade-in relative">
             <div class="h-2 gradient-bg w-full"></div>
-            
             <div class="p-5 md:p-8 text-center">
                 <p class="text-slate-500 text-sm font-medium uppercase tracking-wider mb-2">Your Public IP Address</p>
                 
                 <div class="relative group">
                     <h2 id="ipAddress" class="ip-font text-3xl md:text-5xl font-bold text-slate-800 break-all leading-tight py-2 selection:bg-purple-100">
-                        <span class="animate-pulse bg-slate-200 text-transparent rounded px-2">102.168.1.1</span>
+                        <span class="animate-pulse bg-slate-200 text-transparent rounded px-2">Loading...</span>
                     </h2>
-                    
                     <div id="copyFeedback" class="absolute top-full left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-3 rounded opacity-0 transition-opacity duration-300">
                         Copied!
                     </div>
@@ -165,7 +114,6 @@
             <h3 class="font-bold text-slate-800 mb-4 flex items-center">
                 <i class="fas fa-shield-alt text-green-500 mr-2"></i> Privacy Status
             </h3>
-            
             <div class="space-y-3">
                 <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                     <div class="flex items-center gap-3">
@@ -179,7 +127,6 @@
                     </div>
                     <button onclick="checkDNSLeak()" class="text-blue-600 text-xs font-bold px-2 py-1 bg-blue-50 rounded hover:bg-blue-100">Check</button>
                 </div>
-
                 <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
@@ -198,33 +145,31 @@
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
                 <div>
                     <h3 class="font-bold text-slate-800 text-lg">Speed Test</h3>
-                    <p id="speedStatus" class="text-xs text-slate-500">Check your network performance</p>
+                    <p id="speedStatus" class="text-xs text-slate-500">Client-side test (No server load)</p>
                 </div>
                 <button id="startSpeedtestBtn" onclick="startSpeedtest()" class="w-full sm:w-auto bg-slate-800 hover:bg-black text-white text-sm font-bold py-2.5 px-6 rounded-full shadow-lg transition active:scale-95">
                     Start Test
                 </button>
             </div>
 
-            <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-4">
+            <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="bg-slate-50 p-3 rounded-xl text-center border border-slate-100">
-                    <div class="text-[10px] text-slate-400 font-bold uppercase mb-1">Ping</div>
+                    <div class="text-[10px] text-slate-400 font-bold uppercase mb-1">Latency</div>
                     <div class="text-lg sm:text-2xl font-black text-slate-700 leading-none"><span id="pingVal">--</span></div>
-                    <div class="text-[10px] text-slate-400">ms</div>
+                    <div class="text-[10px] text-slate-400 mt-1">ms (Google)</div>
                 </div>
                 <div class="bg-indigo-50 p-3 rounded-xl text-center border border-indigo-100">
                     <div class="text-[10px] text-indigo-400 font-bold uppercase mb-1">Download</div>
                     <div class="text-lg sm:text-2xl font-black text-indigo-600 leading-none"><span id="downloadVal">--</span></div>
-                    <div class="text-[10px] text-indigo-400">Mbps</div>
-                </div>
-                <div class="bg-purple-50 p-3 rounded-xl text-center border border-purple-100">
-                    <div class="text-[10px] text-purple-400 font-bold uppercase mb-1">Upload</div>
-                    <div class="text-lg sm:text-2xl font-black text-purple-600 leading-none"><span id="uploadVal">--</span></div>
-                    <div class="text-[10px] text-purple-400">Mbps</div>
+                    <div class="text-[10px] text-indigo-400 mt-1">Mbps (CDN)</div>
                 </div>
             </div>
             
             <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
                 <div id="speedProgress" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 w-0 transition-all duration-300"></div>
+            </div>
+            <div class="mt-2 text-center">
+                <p class="text-[10px] text-slate-400 italic">* Upload test skipped to protect server bandwidth.</p>
             </div>
         </div>
 
@@ -258,7 +203,7 @@
                     updateDisplay(data);
                     addToHistory(data.ipAddress, data.location ? data.location.country : 'N/A');
                     detectWebRTC(); 
-                    checkDNSLeak(); // Auto check DNS on load
+                    checkDNSLeak(); 
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -267,25 +212,14 @@
         }
         
         function updateDisplay(data) {
-            // IP
             document.getElementById('ipAddress').innerText = data.ipAddress;
-            
-            // Location
             const loc = data.location || {};
-            const city = loc.city || 'Unknown City';
-            const country = loc.country || 'Unknown';
-            document.getElementById('locationInfo').innerText = `${city}, ${country}`;
-            
-            // ISP / Org (Logic Fix: Show N/A if not available)
-            // Note: geoip-lite often doesn't provide ISP name in free version, 
-            // so we handle the 'Loading' state properly here.
+            document.getElementById('locationInfo').innerText = `${loc.city || '-'}, ${loc.country || '-'}`;
             document.getElementById('ispInfo').innerText = loc.org || 'Standard ISP'; 
-
-            // Browser Simple
             document.getElementById('browserSimple').innerText = `${data.userAgent.browser} on ${data.userAgent.os}`;
         }
 
-        // --- HISTORY LOGIC ---
+        // --- HISTORY LOGIC (Max 20, No Delete) ---
         function addToHistory(ip, country) {
             let history = JSON.parse(localStorage.getItem('ipHistory') || '[]');
             if (history.length > 0 && history[0].ip === ip) return;
@@ -293,7 +227,6 @@
             const newItem = { ip, country, date: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) };
             history.unshift(newItem); 
             
-            // UPDATE: Batas dinaikkan menjadi 20
             if (history.length > 20) history.pop(); 
             
             localStorage.setItem('ipHistory', JSON.stringify(history));
@@ -323,7 +256,62 @@
             `).join('');
         }
 
-        // FUNGSI clearHistory() SUDAH DIHAPUS
+        // --- CLIENT-SIDE SPEEDTEST LOGIC ---
+        let isTesting = false;
+        async function startSpeedtest() {
+            if(isTesting) return;
+            isTesting = true;
+            const btn = document.getElementById('startSpeedtestBtn');
+            const status = document.getElementById('speedStatus');
+            const bar = document.getElementById('speedProgress');
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running';
+            btn.classList.add('opacity-75');
+            
+            document.getElementById('pingVal').innerText = '--';
+            document.getElementById('downloadVal').innerText = '--';
+            bar.style.width = '5%';
+            
+            try {
+                // 1. PING TEST (Ke Google)
+                status.innerText = "Pinging Google...";
+                const pingStart = performance.now();
+                // mode 'no-cors' agar tidak error, tapi kita hanya ukur waktu round-trip
+                await fetch('https://www.google.com/generate_204', { mode: 'no-cors', cache: 'no-store' });
+                const pingTime = (performance.now() - pingStart).toFixed(0);
+                document.getElementById('pingVal').innerText = pingTime;
+                bar.style.width = '40%';
+
+                // 2. DOWNLOAD TEST (Ke Unsplash CDN)
+                status.innerText = "Downloading from CDN...";
+                
+                const imageAddr = "https://images.unsplash.com/photo-1558051815-0f18e64e6280?q=80&w=4000"; 
+                const startTime = performance.now();
+                const cacheBuster = "&nnn=" + startTime;
+                
+                const response = await fetch(imageAddr + cacheBuster, { mode: 'cors' });
+                const blob = await response.blob();
+                
+                const duration = (performance.now() - startTime) / 1000;
+                const bitsLoaded = blob.size * 8;
+                const speedBps = bitsLoaded / duration;
+                const speedMbps = (speedBps / 1024 / 1024).toFixed(1);
+                
+                document.getElementById('downloadVal').innerText = speedMbps;
+                bar.style.width = '100%';
+                
+                status.innerText = "Test Complete";
+                btn.innerHTML = 'Test Again';
+
+            } catch (err) {
+                console.error(err);
+                status.innerText = "Test Failed (Adblock?)";
+                btn.innerHTML = 'Retry';
+            } finally {
+                isTesting = false;
+                btn.classList.remove('opacity-75');
+            }
+        }
 
         // --- LEAK TESTS ---
         function detectWebRTC() {
@@ -334,11 +322,9 @@
             
             rtc.onicecandidate = e => {
                 if (!e.candidate) return;
-                const ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
-                const match = e.candidate.candidate.match(ipRegex);
+                const match = e.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3})/);
                 if (match) {
                     const ip = match[1];
-                    // Check for local IPs
                     if(ip.match(/^(192\.168|10\.|172\.(1[6-9]|2\d|3[01]))/)) {
                         leaked = true;
                         display.innerHTML = `<span class="text-red-600"><i class="fas fa-exclamation-circle"></i> Leaking: ${ip}</span>`;
@@ -358,11 +344,9 @@
         async function checkDNSLeak() {
             const el = document.getElementById('dnsResult');
             el.innerHTML = '<span class="text-slate-400 animate-pulse">Analyzing...</span>';
-            
             try {
                 const res = await fetch('https://edns.ip-api.com/json');
                 const data = await res.json();
-                
                 if(data && data.dns && data.dns.ip) {
                     el.innerHTML = `<span class="text-slate-800">${data.dns.ip}</span> <span class="text-[10px] text-slate-400 block">${data.dns.geo || ''}</span>`;
                 } else {
@@ -370,73 +354,6 @@
                 }
             } catch(e) {
                 el.innerHTML = '<span class="text-red-400">Error</span>';
-            }
-        }
-
-        // --- SPEEDTEST ---
-        let isTesting = false;
-        async function startSpeedtest() {
-            if(isTesting) return;
-            isTesting = true;
-            const btn = document.getElementById('startSpeedtestBtn');
-            const status = document.getElementById('speedStatus');
-            const bar = document.getElementById('speedProgress');
-            
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing';
-            btn.classList.add('opacity-75');
-            
-            // Reset UI
-            document.getElementById('pingVal').innerText = '--';
-            document.getElementById('downloadVal').innerText = '--';
-            document.getElementById('uploadVal').innerText = '--';
-            bar.style.width = '5%';
-            
-            try {
-                // 1. Ping
-                status.innerText = "Measuring Latency...";
-                const pingStart = performance.now();
-                await fetch('/api/speedtest/ping');
-                const pingTime = (performance.now() - pingStart).toFixed(0);
-                document.getElementById('pingVal').innerText = pingTime;
-                bar.style.width = '30%';
-
-                // 2. Download
-                status.innerText = "Testing Download...";
-                const dlStart = performance.now();
-                const dlRes = await fetch('/api/speedtest/download');
-                await dlRes.blob(); // Wait for full body
-                const dlDuration = (performance.now() - dlStart) / 1000;
-                // Assuming 5MB dummy file = 5 * 8 Mb = 40 Megabits
-                // Adjust size calculation based on actual bytes received if possible, 
-                // but for dummy test constant size is approx.
-                const dlSpeed = ((5 * 1024 * 1024 * 8) / dlDuration / 1000000).toFixed(1);
-                document.getElementById('downloadVal').innerText = dlSpeed;
-                bar.style.width = '65%';
-
-                // 3. Upload
-                status.innerText = "Testing Upload...";
-                const upData = new Uint8Array(2 * 1024 * 1024); // 2MB
-                const upStart = performance.now();
-                await fetch('/api/speedtest/upload', {
-                    method: 'POST', 
-                    body: upData,
-                    headers: {'Content-Type': 'application/octet-stream'}
-                });
-                const upDuration = (performance.now() - upStart) / 1000;
-                const upSpeed = ((2 * 1024 * 1024 * 8) / upDuration / 1000000).toFixed(1);
-                document.getElementById('uploadVal').innerText = upSpeed;
-                bar.style.width = '100%';
-                
-                status.innerText = "Test Complete";
-                btn.innerHTML = 'Test Again';
-
-            } catch (err) {
-                console.error(err);
-                status.innerText = "Network Error";
-                btn.innerHTML = 'Retry';
-            } finally {
-                isTesting = false;
-                btn.classList.remove('opacity-75');
             }
         }
 
@@ -448,18 +365,15 @@
             feedback.style.opacity = '1';
             setTimeout(() => feedback.style.opacity = '0', 2000);
         }
-        
         function copyText(text) {
             navigator.clipboard.writeText(text);
             alert('IP Copied: ' + text);
         }
-
         function refreshData() {
             document.getElementById('ipAddress').innerHTML = '<span class="animate-pulse text-gray-300">...</span>';
             fetchIPData();
         }
 
-        // Start
         document.addEventListener('DOMContentLoaded', fetchIPData);
     </script>
 </body>
