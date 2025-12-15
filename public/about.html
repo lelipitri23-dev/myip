@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - MY IP PRO</title>
+    <meta name="description" content="Learn more about MY IP PRO tools and our privacy commitment.">
+    <link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAApElEQVQ4jWNkwAEYcQkwMjIyMjExMeHkY2RkZPz//z8jTj4uAFcuIyMjI2FdWPpgahkZGRn//fvH+OfPH4zSMDYjIyPjz58/4TbA1GMAZmx6sAAjLj2MqG4lCsB9gMsXRIXAf//+Mf7+/Ru/Abh8gQ3AFWAkRw8jIwED/v37R5oBjIyMjJ8+fWL8+fMnfgO+fv1KnAEMDAyM3759Y2RgYGBkYGBg/A8AAAD//8WmgjL4Kx+LAAAAAElFTkSuQmCC">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <nav class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="/" class="flex items-center space-x-2 hover:opacity-90 transition">
+                    <i class="fas fa-network-wired text-2xl"></i>
+                    <h1 class="text-2xl font-bold">MY IP PRO</h1>
+                </a>
+                <div class="space-x-4">
+                    <a href="/" class="hover:text-gray-200 font-medium"><i class="fas fa-home mr-1"></i> Home</a>
+                    <a href="/about" class="text-white font-bold border-b-2 border-white pb-1">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-12 flex-grow">
+        <div class="max-w-3xl mx-auto">
+            
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">About MY IP PRO</h2>
+                <div class="h-1 w-20 bg-indigo-500 mx-auto rounded"></div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-8 space-y-8">
+                    
+                    <section>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-info-circle text-indigo-600 mr-3"></i> What is this tool?
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <strong>MY IP PRO</strong> is a comprehensive network utility designed to give you instant insight into your digital connection. Whether you are a developer debugging a network issue, a gamer checking latency, or a privacy-conscious user verifying a VPN connection, we provide the data you need in real-time.
+                        </p>
+                    </section>
+
+                    <hr class="border-gray-100">
+
+                    <section>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-tools text-indigo-600 mr-3"></i> Our Tools
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800 mb-2">IP Analysis</h4>
+                                <p class="text-sm text-gray-600">Detects your public IPv4/IPv6 address along with geolocation data (Country, City, ISP) and browser fingerprints.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800 mb-2">Speedtest</h4>
+                                <p class="text-sm text-gray-600">Measures your network Latency (Ping), Download speed, and Upload speed directly from your browser without Flash or Java.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800 mb-2">DNS Leak Check</h4>
+                                <p class="text-sm text-gray-600">Verifies which DNS server is handling your requests to ensure your VPN is effectively hiding your DNS queries.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800 mb-2">WebRTC Detection</h4>
+                                <p class="text-sm text-gray-600">Checks if your browser is leaking your local LAN IP address through WebRTC technology.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <hr class="border-gray-100">
+
+                    <section class="bg-indigo-50 p-6 rounded-xl border border-indigo-100">
+                        <h3 class="text-xl font-bold text-indigo-800 mb-3 flex items-center">
+                            <i class="fas fa-user-shield mr-3"></i> Privacy & Data Policy
+                        </h3>
+                        <p class="text-indigo-700 text-sm mb-3">
+                            We believe in privacy first. Here is how we handle your data:
+                        </p>
+                        <ul class="list-disc list-inside text-indigo-600 text-sm space-y-1">
+                            <li><strong>No Logging:</strong> We do not store your IP address or query history on our databases.</li>
+                            <li><strong>Client-Side Processing:</strong> Most checks (like History) are stored locally in your browser (LocalStorage).</li>
+                            <li><strong>Transient Data:</strong> Speedtest data is generated instantly and discarded immediately after the test.</li>
+                        </ul>
+                    </section>
+
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <p class="text-gray-500 mb-4">Have suggestions or found a bug?</p>
+                <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition">
+                    <i class="fab fa-github mr-2"></i> View on GitHub
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="gradient-bg text-white mt-auto">
+        <div class="container mx-auto px-4 py-6 text-center">
+            <p class="opacity-90">&copy; 2023 MY IP PRO. Your digital identity revealed.</p>
+        </div>
+    </footer>
+</body>
+</html>
