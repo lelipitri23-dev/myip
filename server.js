@@ -15,9 +15,11 @@ app.use(helmet({
     contentSecurityPolicy: false,
 }));
 app.use(cors());
-// Limit body size untuk upload test
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Limit body dikembalikan ke default (kecil) karena tidak ada upload test lagi
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(requestIp.mw());
 
@@ -27,6 +29,8 @@ app.get('/api/myip', (req, res) => {
         const clientIp = req.clientIp;
         const userAgent = req.headers['user-agent'];
         const agent = useragent.parse(userAgent);
+        
+        // GeoIP Lookup
         const geo = geoip.lookup(clientIp);
         
         const browserInfo = {
@@ -62,7 +66,8 @@ app.get('/api/myip', (req, res) => {
                 timezone: geo.timezone,
                 ll: geo.ll,
                 metro: geo.metro,
-                range: geo.range
+                range: geo.range,
+                org: geo.org // Kadang geoip-lite punya field org (opsional)
             } : null,
             userAgent: browserInfo,
             connection: connectionInfo,
@@ -81,39 +86,12 @@ app.get('/api/myip', (req, res) => {
     }
 });
 
-// --- API SPEEDTEST ---
-
-// 1. Latency / Ping Endpoint
-app.get('/api/speedtest/ping', (req, res) => {
-    res.status(200).send('pong');
-});
-
-// 2. Download Test (Mengirim junk data 5MB)
-app.get('/api/speedtest/download', (req, res) => {
-    // Generate buffer 5MB (sekitar 5 juta byte)
-    const sizeInBytes = 5 * 1024 * 1024; 
-    const buffer = Buffer.alloc(sizeInBytes, 'a');
-    
-    res.set({
-        'Content-Type': 'application/octet-stream',
-        'Content-Length': sizeInBytes,
-        'Cache-Control': 'no-cache, no-store, must-revalidate'
-    });
-    res.send(buffer);
-});
-
-// 3. Upload Test (Menerima junk data)
-app.post('/api/speedtest/upload', (req, res) => {
-    // Data diterima tapi tidak disimpan untuk menghemat memori
-    res.status(200).json({ success: true, message: 'Upload received' });
-});
-
-
-// Endpoint Halaman
+// Endpoint Halaman Utama
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Endpoint Halaman About
 app.get('/about', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'about.html'));
 });
