@@ -24,6 +24,86 @@
             transform-origin: 50% 50%;
         }
     </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "MY IP PRO",
+          "url": "https://myippro.com/", 
+          "description": "All-in-one network tools: Check IP Address, Internet Speed Test (Ping, Download, Upload), DNS Leak Test, and WebRTC Privacy Check.",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires JavaScript",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          "featureList": [
+            "Real-time IP Address Detection",
+            "Internet Speed Test (Download, Upload, Ping)",
+            "DNS Leak Detection",
+            "WebRTC Local IP Leak Check",
+            "User Agent & Browser Analysis",
+            "Recent IP History"
+          ],
+          "author": {
+            "@type": "Organization",
+            "name": "MY IP PRO"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is my IP address?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Your IP address is a unique numerical label assigned to your device. MY IP PRO detects your public IPv4/IPv6 address, location, and ISP instantly."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I check for DNS Leaks?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Use the 'Privacy Leak Check' section on this tool. It queries a public API to see which DNS server is handling your requests. If the result shows your ISP's server instead of your VPN's server, you have a DNS leak."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is the Internet Speed Test accurate?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, our Speedtest measures your latency (ping), download speed, and upload speed directly from your browser to our optimized server endpoint."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://myippro.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "About",
+              "item": "https://myippro.com/about"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <nav class="gradient-bg text-white shadow-lg sticky top-0 z-50">
